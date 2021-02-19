@@ -15,9 +15,12 @@ import routes from "routes.js";
 import logo from "assets/img/monkey.gif";
 import { BackgroundColorContext } from "contexts/BackgroundColorContext";
 
+import LoginPrompt from "views/Login";
+
 var ps;
 
 function Admin(props) {
+  const [isAuth, setIsAuth] = React.useState(false);
   const location = useLocation();
   const mainPanelRef = React.useRef(null);
   const [sidebarOpened, setsidebarOpened] = React.useState(
@@ -85,6 +88,13 @@ function Admin(props) {
     }
     return "Brand";
   };
+
+
+  if(!isAuth) {
+    return(<LoginPrompt />)
+  }
+
+
   return (
     <BackgroundColorContext.Consumer>
       {({ color, changeColor }) => (
@@ -115,6 +125,7 @@ function Admin(props) {
               }
             </div>
           </div>
+          }
           <FixedPlugin bgColor={color} handleBgClick={changeColor} />
         </React.Fragment>
       )}
