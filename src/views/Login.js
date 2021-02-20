@@ -1,9 +1,26 @@
 import React from "react";
-import classNames from "classnames";
-import { Card, CardImg, CardBody, CardTitle, CardSubtitle, Button } from 'reactstrap';
+import { useHistory } from "react-router-dom";
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { web3, portis } from '../services/web3';
 
 const LoginPrompt = (props) => {
+
+  const { modal, setModal, isAuth, setIsAuth } = props;
+
+  // if already authenticated, dont show modal
+  if(isAuth) { setModal(false); }
+
+  let history = useHistory()
+
+  const checkAuth = () => {
+    if(!isAuth && !modal) {
+      history.goBack();
+    }
+  }
+
+  const closeModal = () => {
+    setModal(false);
+  };
 
   const MetamaskLogin = (e) => {
     e.preventDefault();
@@ -15,11 +32,13 @@ const LoginPrompt = (props) => {
     portis.provider.enable();
     
     portis.onLogin((walletAddress, email, reputation) => {
+      console.log(walletAddress)
       web3.eth.getBalance(walletAddress)
         .then( (balance) => {
           balance = Number(web3.utils.fromWei(balance))
-          this.context.authenticated(walletAddress, balance);
-      });
+          // TODO set address
+        });
+      setIsAuth(true); setModal(false);
     });
 
     portis.onError((err) => {
@@ -28,26 +47,24 @@ const LoginPrompt = (props) => {
   }
 
   return(
-    <>
-    <div>
-      <Card>
-        <CardImg top width="100%" src="" alt="monke-beeer" />
-        <CardBody>
-          <CardTitle tag="h5">Monkey Daggers</CardTitle>
-          <CardSubtitle tag="h6" className="mb-2 text-muted">
-            Dashboard Login
-          </CardSubtitle>
-          <Button outline color="primary" onClick={MetamaskLogin}>
-            Metamask
-          </Button>
-          <br/>
-          <Button outline color="secondary" onClick={PortisLogin}>
-            Portis
-          </Button>
-        </CardBody>
-      </Card>
-    </div>
-    </>
+    <Modal 
+      isOpen={modal} toggle={closeModal} autoFocus={true} size="sm"
+      backdrop="static" keyboard={false} onClosed={checkAuth}
+    >
+      <ModalHeader toggle={closeModal}>
+        Monkey Daggers - Login
+      </ModalHeader>
+      <ModalBody>
+        <Button outline color="primary" onClick={MetamaskLogin}>
+          Metamask
+        </Button>
+        {'  '}
+        <Button outline color="secondary" onClick={PortisLogin}>
+          Portis
+        </Button>
+      </ModalBody>
+      <ModalFooter></ModalFooter>
+    </Modal>
   );
 }
 

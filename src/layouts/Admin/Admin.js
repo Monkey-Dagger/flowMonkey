@@ -20,7 +20,6 @@ import LoginPrompt from "views/Login";
 var ps;
 
 function Admin(props) {
-  const [isAuth, setIsAuth] = React.useState(false);
   const location = useLocation();
   const mainPanelRef = React.useRef(null);
   const [sidebarOpened, setsidebarOpened] = React.useState(
@@ -90,12 +89,23 @@ function Admin(props) {
   };
 
 
-  if(!isAuth) {
-    return(<LoginPrompt />)
-  }
+  // if(!isAuth) {
+  //   return(<LoginPrompt />)
+  // } // gotta login first man
+  
+  const [isAuth, setIsAuth] = React.useState(false);
+  const [modal, setModal] = React.useState(true);
+
 
 
   return (
+    <> 
+    <LoginPrompt 
+      modal={modal} 
+      setModal={setModal} 
+      isAuth={isAuth} 
+      setIsAuth={setIsAuth} 
+    /> {/* TODO :: blur background */}
     <BackgroundColorContext.Consumer>
       {({ color, changeColor }) => (
         <React.Fragment>
@@ -125,11 +135,11 @@ function Admin(props) {
               }
             </div>
           </div>
-          }
           <FixedPlugin bgColor={color} handleBgClick={changeColor} />
         </React.Fragment>
       )}
     </BackgroundColorContext.Consumer>
+    </>
   );
 }
 
