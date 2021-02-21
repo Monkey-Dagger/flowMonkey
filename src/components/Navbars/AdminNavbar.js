@@ -90,18 +90,24 @@ function AdminNavbar(props) {
                   onClick={(e) => e.preventDefault()}
                 >
                   <Button className="btn-fill" color="secondary" type="submit">
-                    Connected
+                    Connected {/* TODO :: make variable */}
                   </Button>
                   <b className="caret d-none d-lg-block d-xl-block" />
                   <p className="d-lg-none">Log out</p>
                 </DropdownToggle>
                 <DropdownMenu className="dropdown-navbar" right tag="ul">
                   <NavLink tag="li">
-                    <DropdownItem className="nav-item">0x5a858FDFeb85d800753cB35b7ed254eFa7d1F8f2</DropdownItem>
+                    <DropdownItem className="nav-item">
+                      {/* TODO :: get from Login */}
+                      0x5a858FDFeb85d800753cB35b7ed254eFa7d1F8f2
+                    </DropdownItem> 
                   </NavLink>
                   <DropdownItem divider tag="li" />
                   <NavLink tag="li">
-                    <DropdownItem className="nav-item">Disconnect</DropdownItem>
+                    <DropdownItem className="nav-item">
+                      Disconnect
+                      {/* TODO :: actually logout and redirect to landing */}
+                    </DropdownItem>
                   </NavLink>
                 </DropdownMenu>
               </UncontrolledDropdown>

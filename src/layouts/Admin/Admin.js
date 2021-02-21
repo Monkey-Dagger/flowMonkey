@@ -15,6 +15,8 @@ import routes from "routes.js";
 import logo from "assets/img/monkey.gif";
 import { BackgroundColorContext } from "contexts/BackgroundColorContext";
 
+import LoginPrompt from "views/Login";
+
 var ps;
 
 function Admin(props) {
@@ -85,7 +87,25 @@ function Admin(props) {
     }
     return "Brand";
   };
+
+
+  // if(!isAuth) {
+  //   return(<LoginPrompt />)
+  // } // gotta login first man
+  
+  const [isAuth, setIsAuth] = React.useState(false);
+  const [modal, setModal] = React.useState(true);
+
+
+
   return (
+    <> 
+    <LoginPrompt 
+      modal={modal} 
+      setModal={setModal} 
+      isAuth={isAuth} 
+      setIsAuth={setIsAuth} 
+    /> {/* TODO :: blur background */}
     <BackgroundColorContext.Consumer>
       {({ color, changeColor }) => (
         <React.Fragment>
@@ -119,6 +139,7 @@ function Admin(props) {
         </React.Fragment>
       )}
     </BackgroundColorContext.Consumer>
+    </>
   );
 }
 
